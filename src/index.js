@@ -3,10 +3,19 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
-
+import ErrorBoundary from './components/Errors/ErrorBoundary';
+import { AuthProvider } from './contexts/AuthContext';
+import '../node_modules/bootstrap/dist/css/bootstrap.min.css'
+import { LogOutDialogProvider } from './contexts/LogoutDialogContext';
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+    <ErrorBoundary>
+      <AuthProvider>
+        <LogOutDialogProvider>
+        <App />
+        </LogOutDialogProvider>
+      </AuthProvider>
+    </ErrorBoundary>
   </React.StrictMode>,
   document.getElementById('root')
 );

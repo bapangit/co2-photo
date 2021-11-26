@@ -1,22 +1,26 @@
-import {client} from '../apiClient/client'
+import { useState } from 'react'
+import styled from 'styled-components'
+import { openClient } from '../apiClients/openClient'
 
+const Wrapper = styled.div`
+margin-top: 60px;
+`
 export default function Photos() {
+    const[text,setText] = useState("click here")
     var callFunction = () => {
-        client.post("greet").then(
+        openClient.post("greet").then(
             res => {
-                console.log(res.data)
+                setText(res.data)
             },
             err => {
-                console.log("error")
                 console.log(err)
             }
         )
     }
     
-    
     return (
         <>
-            <div onClick={()=>{callFunction()}}>photos</div>
+            <Wrapper><div style={{cursor:"pointer"}} onClick={()=>{callFunction()}}>{text}</div></Wrapper>
         </>
     )
 }
