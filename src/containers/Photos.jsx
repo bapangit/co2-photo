@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import { openClient } from '../apiClients/openClient'
 
 const Wrapper = styled.div`
-margin-top: 60px;
+padding-top: 45px;
 `
 export default function Photos() {
     const[text,setText] = useState("click here")

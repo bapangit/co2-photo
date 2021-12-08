@@ -2,6 +2,7 @@ import React,{useContext} from 'react'
 import styled from 'styled-components';
 import { AuthContext } from '../../../contexts/AuthContext';
 import { LogoutDialogContext } from '../../../contexts/LogoutDialogContext';
+import { logout } from '../../../utils/helper';
 import Dialog from './Dialog';
 
 const ButtonBar = styled.div`
@@ -22,9 +23,8 @@ export default function LogOutDialog() {
     const { isOpen, setOpen } = useContext(LogoutDialogContext)
     const {setAuth} = useContext(AuthContext)
     const logOut = () => {
+        logout()
         setAuth(false)
-        localStorage.setItem("token", "")
-        localStorage.setItem("refresh_token", "")
         setOpen(false)
     }
     return (

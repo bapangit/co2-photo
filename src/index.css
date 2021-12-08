@@ -12,7 +12,10 @@ code {
     monospace;
 }
 .loader{
-  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
 }
 .menu-button{
   text-decoration: none;
@@ -21,4 +24,7 @@ code {
 .icon-style{
   transform: scale(1.2);
   margin-right: 5px;
+}
+html {
+  overflow-y: scroll;
 }

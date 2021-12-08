@@ -6,7 +6,7 @@ import styled from 'styled-components';
 import { AuthContext } from '../contexts/AuthContext';
 
 const Container = styled.div`
-height: 100vh;
+margin-top: 200px;
 display: flex;
 justify-content: center;
 align-items: center;
@@ -23,6 +23,7 @@ export default function Login() {
             res => {
                 localStorage.setItem("token", res.data.accessToken);
                 localStorage.setItem("refresh_token", res.data.refreshToken);
+                localStorage.setItem("email", res.data.email);
                 if (res.data.accessToken) {
                     setAuth(true)
                     navigate("/myphotos")

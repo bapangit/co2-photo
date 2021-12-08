@@ -26,6 +26,7 @@ let dialogCloseButtonStyles = {
     height: '30px',
     fontWeight: 'bold',
     alignSelf: 'flex-end'
+    
 };
 
 
@@ -38,7 +39,7 @@ class Dialog extends Component {
             </div>
         );
 
-        if (! this.props.isOpen) {
+        if (!this.props.isOpen) {
             dialog = null;
         }
         return (
