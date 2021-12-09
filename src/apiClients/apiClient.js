@@ -1,12 +1,17 @@
 import axios from "axios";
 import jwtDecode from "jwt-decode";
 import {logout} from "../utils/helper"
-//const baseURL = "http://localhost:5000/";
-const baseURL = "https://co2-service.herokuapp.com/";
+const baseURL = "http://localhost:5000/";
+//const baseURL = "https://co2-service.herokuapp.com/";
+
+const openClient = axios.create({
+    baseURL: baseURL,
+    timeout: 10000
+});
 
 var client = axios.create({
     baseURL: baseURL,
-    timeout: 10000,
+    timeout: 60000,
     headers: {
         'Content-Type': 'application/json'
     }
@@ -42,10 +47,12 @@ client.interceptors.request.use(async (config) => {
 client.interceptors.response.use(
     response => response,
     error => {
+        console.log(error)
         if(error.response.status === 401){
             logout()
+            console.log("please logout");
         }
     }
 )
 
-export { client };
+export { openClient,client };

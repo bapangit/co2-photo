@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import styled from 'styled-components'
-import { openClient } from '../apiClients/openClient'
+import { openClient } from '../apiClients/apiClient'
 
 const Wrapper = styled.div`
 padding-top: 45px;

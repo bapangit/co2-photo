@@ -62,9 +62,9 @@ const LogoutButton = styled.div`
     &:hover{
         transform: translateX(5px);
     }
-    :active{
+    /* :active{
         color: #ff3300;
-    }
+    } */
     .icon{
         transform: scale(1.8);
         margin-right: 10px;
@@ -110,7 +110,7 @@ export default function NavigationBar() {
             </MenuBox>
             <EndBox>
                 <LogoutButton auth={auth} onClick={() => { loging() }}>
-                    {auth? <MdAccountCircle className="icon" /> : <MdNoAccounts className="icon" />}
+                    {auth? <MdAccountCircle className="icon"/> : <MdNoAccounts className="icon"/>}
                     <div>
                         {auth ? "LOGOUT" : "LOGIN"}
                     </div>
