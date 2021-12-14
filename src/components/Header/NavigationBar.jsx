@@ -6,6 +6,8 @@ import MenuButton from '../Buttons/MenuButton'
 import { AiFillHome } from 'react-icons/ai';
 import { MdNoAccounts, MdAccountCircle } from 'react-icons/md'
 import { LogoutDialogContext } from '../../contexts/LogoutDialogContext'
+import { Offline, Online } from "react-detect-offline";
+import {HiStatusOffline} from 'react-icons/hi'
 
 const Wrapper = styled.div`
     background-color: #ffd6c7;
@@ -50,21 +52,27 @@ const EndBox = styled.div`
     flex: 1;
     display: flex;
     justify-content: end;
+    .offline-icon{
+        transform: scale(1.5);
+        color: lightcoral;
+    }
 `
 const LogoutButton = styled.div`
     color: #424242;
     cursor: pointer;
     font-size: smaller;
     display: flex;
+    justify-content: center;
     align-items: center;
     font-weight: 400;
     transition: all .15s ease-in-out;
     &:hover{
         transform: translateX(5px);
     }
-    /* :active{
-        color: #ff3300;
-    } */
+    .block{
+        display: flex;
+        align-items: center;
+    }
     .icon{
         transform: scale(1.8);
         margin-right: 10px;
@@ -73,7 +81,7 @@ const LogoutButton = styled.div`
     }}
     }
     .text{
-@media (max-width: 576px) {
+    @media (max-width: 576px) {
         display: none;
         }
     }
@@ -109,12 +117,12 @@ export default function NavigationBar() {
                 })}
             </MenuBox>
             <EndBox>
+            <Offline><HiStatusOffline className='offline-icon'/></Offline>
+            <Online>
                 <LogoutButton auth={auth} onClick={() => { loging() }}>
-                    {auth? <MdAccountCircle className="icon"/> : <MdNoAccounts className="icon"/>}
-                    <div>
-                        {auth ? "LOGOUT" : "LOGIN"}
-                    </div>
+                    {auth? <div className='block'><MdAccountCircle className="icon"/>LOGOUT</div>:<div className='block'><MdNoAccounts className="icon"/>LOGIN</div>}   
                 </LogoutButton>
+            </Online>
             </EndBox>
         </Wrapper>
     )

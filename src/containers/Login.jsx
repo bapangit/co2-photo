@@ -1,8 +1,8 @@
-import axios from 'axios';
 import React, { useContext, useEffect } from 'react'
 import GoogleLogin from 'react-google-login';
 import { useNavigate } from 'react-router';
 import styled from 'styled-components';
+import { openClient } from '../apiClients/apiClient';
 import { AuthContext } from '../contexts/AuthContext';
 
 const Container = styled.div`
@@ -15,11 +15,7 @@ export default function Login() {
     const navigate = useNavigate()
     const { setAuth } = useContext(AuthContext)
     const responseSuccessGoogle = (response) => {
-        axios({
-            method: "POST"
-            , url: "http://localhost:5000/googlelogin"
-            , data: { tokenId: response.tokenId }
-        }).then(
+        openClient.post("googlelogin",{ tokenId: response.tokenId }).then(
             res => {
                 localStorage.setItem("token", res.data.accessToken);
                 localStorage.setItem("refresh_token", res.data.refreshToken);

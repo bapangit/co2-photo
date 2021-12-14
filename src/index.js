@@ -9,14 +9,17 @@ import { AuthProvider } from './contexts/AuthContext';
 import '../node_modules/bootstrap/dist/css/bootstrap.min.css'
 import { LogOutDialogProvider } from './contexts/LogoutDialogContext';
 import { MyPhotosProvider } from './contexts/MyPhotos';
+import { AppDataProvider } from './contexts/AppDataContext';
 ReactDOM.render(
   <React.StrictMode>
     <ErrorBoundary>
       <AuthProvider>
         <LogOutDialogProvider>
-        <MyPhotosProvider>
-        <App />
-        </MyPhotosProvider>
+          <MyPhotosProvider>
+            <AppDataProvider>
+              <App/>
+            </AppDataProvider>
+          </MyPhotosProvider>
         </LogOutDialogProvider>
       </AuthProvider>
     </ErrorBoundary>

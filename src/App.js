@@ -18,9 +18,9 @@ const Reported = React.lazy(() => import("./containers/Reported"))
 
 const Loader = () => <div className="loader"><div>Loading...</div></div>
 function App() {
-  const { auth, setAuth } = useContext(AuthContext)
+  const { auth } = useContext(AuthContext)
   /* locastorage is checked for the refreshtoken */
-  localStorage.getItem("refresh_token") ? setAuth(true) : setAuth(false)
+  //localStorage.getItem("refresh_token") ? setAuth(true) : setAuth(false)
   return (
     <Router>
       <LogOutDialog />

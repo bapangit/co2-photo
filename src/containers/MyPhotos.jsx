@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { useState, useContext } from 'react';
+import { useState, useContext, useEffect } from 'react';
 import { client } from '../apiClients/apiClient'
 import { GrAdd } from 'react-icons/gr'
 import { MdOutlineDone } from 'react-icons/md'
@@ -9,7 +9,9 @@ import MyPhoto from '../components/myComponents/MyPhoto';
 import { MyPhotosContext } from '../contexts/MyPhotos';
 import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
 import Loader from "react-loader-spinner";
+import { AppDataContext } from '../contexts/AppDataContext';
 var page = 0
+const loadingAmount = 4
 const Wrapper = styled.div`
     margin-top: 50px;
 `
@@ -47,7 +49,8 @@ export default function MyPhotos() {
     const [hasMore, setHasMore] = useState(true)
     const [isUploading, setUploading] = useState(false)
     const { myPhotos, setMyPhotos } = useContext(MyPhotosContext)
-
+    const [isPhotosLoaded, setPhotosLoaded] = useState(true)
+    const {setDeletedList} = useContext(AppDataContext)
     const uploadImage = () => {
         if (!isUploading) {
             setUploading(true)
@@ -61,33 +64,40 @@ export default function MyPhotos() {
                     refresh()
                 })
                 .catch(err => {
-                    console.log(err);
                     setUploading(false)
+                    console.log(err);
                 })
         }
     }
 
     const loadMore = () => {
-        client.post("/myphotos", { p: page }).then(
-            res => {
-                if (res.data.length < 4) {
-                    setHasMore(false)
+        if (isPhotosLoaded) {
+            client.post("/myphotos", { p: page }).then(
+                res => {
+                    if (res.data.length < loadingAmount && navigator.onLine) {
+                        setHasMore(false)
+                    }
+                    setMyPhotos([...myPhotos, ...res.data])
+                    page++
+                    setPhotosLoaded(false)
+                },
+                err => {
+                    window.addEventListener('online', () => {
+                        loadMore()
+                    });
+                    console.log(err)
                 }
-                setMyPhotos([...myPhotos, ...res.data])
-                page++
-            },
-            err => { console.log(err); }
-        )
+            )
+        }
     }
 
     const refresh = () => {
+        setDeletedList([])
         page = 0
         setMyPhotos([])
     }
 
-    if (myPhotos.length === 0) {
-        loadMore()
-    }
+
 
     const UploadPart = () => {
         return <>
@@ -122,27 +132,43 @@ export default function MyPhotos() {
 
     }
     const ScrollPart = () => {
-        return <InfiniteScroll
+        return <InfiniteScroll style={{ marginTop: "18px" }}
             dataLength={myPhotos.length} //This is important field to render the next data
             next={loadMore}
             hasMore={hasMore}
-            loader={<h4>Loading...</h4>}
+            loader={
+                <div style={{ width: "100%", display: "flex", flexDirection: "column", alignItems: "center", marginTop: "40px", marginBottom: "20px" }}>
+                    <Loader
+                        type="TailSpin"
+                        height={40}
+                        width={40}
+                        color="#00BFFF" />
+                </div>
+            }
             endMessage={
                 <p style={{ textAlign: 'center' }}>
                     <b>Yay! You have seen it all</b>
                 </p>
             }
         >
-            {myPhotos.map((val, key) => {
-                return <MyPhoto val={val} key={key} />
-            })}
+            <div style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
+                {myPhotos.map((val, key) => {
+                    return <MyPhoto val={val} lastImgUrl={myPhotos[myPhotos.length - 1].photoUrl} setPhotosLoaded={setPhotosLoaded} key={key} index={key} />
+                })}
+            </div>
         </InfiniteScroll>
     }
+    useEffect(() => {
+        console.log(myPhotos);
+        if (myPhotos.length === 0) {
+            loadMore()
+        }
+    }, [myPhotos])
 
     return (
         <Wrapper>
             <UploadPart />
-            <div style={{ borderBottom: "1px #000000 solid" }}></div>
+            <div style={{ borderBottom: "1px #999 solid" }}></div>
             <ScrollPart />
         </Wrapper>
     )

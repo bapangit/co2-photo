@@ -30,6 +30,7 @@ export default function LogOutDialog() {
     return (
         <div>
             <Dialog isOpen={isOpen} onClose={() => { setOpen(false) }}>Are you sure ?
+            <div style={{color:"lightcoral"}}>{localStorage.getItem('email')}</div>
                 <ButtonBar>
                     <div className="button" onClick={() => { setOpen(false) }}>CANCEL</div>
                     <div className="button" onClick={logOut}>LOGOUT</div>
