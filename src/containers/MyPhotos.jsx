@@ -10,6 +10,7 @@ import { MyPhotosContext } from '../contexts/MyPhotos';
 import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
 import Loader from "react-loader-spinner";
 import { AppDataContext } from '../contexts/AppDataContext';
+import { PublicPhotoContext } from '../contexts/PublicPhotoContext';
 var page = 0
 const loadingAmount = 4
 const Wrapper = styled.div`
@@ -46,11 +47,12 @@ export default function MyPhotos() {
     const [imageFile, setImageFile] = useState()
     const [uploaded, setUploaded] = useState(false)
     const [isUploadSection, setUploadSection] = useState(false)
-    const [hasMore, setHasMore] = useState(true)
+    const { hasMore, setHasMore } = useContext(AppDataContext)
     const [isUploading, setUploading] = useState(false)
     const { myPhotos, setMyPhotos } = useContext(MyPhotosContext)
     const [isPhotosLoaded, setPhotosLoaded] = useState(true)
-    const {setDeletedList} = useContext(AppDataContext)
+    const { setDeletedList } = useContext(AppDataContext)
+    const { setPublicPhoto } = useContext(PublicPhotoContext) 
     const uploadImage = () => {
         if (!isUploading) {
             setUploading(true)
@@ -89,6 +91,15 @@ export default function MyPhotos() {
                 }
             )
         }
+    }
+
+    const getUser = () => {
+        client.post("getuser").then(
+            res =>  {
+                setPublicPhoto(res.data.publicPhoto)
+            } ,
+            err =>  console.log(err)
+        )
     }
 
     const refresh = () => {
@@ -159,9 +170,9 @@ export default function MyPhotos() {
         </InfiniteScroll>
     }
     useEffect(() => {
-        console.log(myPhotos);
         if (myPhotos.length === 0) {
             loadMore()
+            getUser()
         }
     }, [myPhotos])
 

@@ -1,8 +1,8 @@
 import axios from "axios";
 import jwtDecode from "jwt-decode";
 import { logout } from "../utils/helper"
-//const baseURL = "http://localhost:5000/";
-const baseURL = "https://co2-service.herokuapp.com/";
+const baseURL = "http://localhost:5000/";
+//const baseURL = "https://co2-service.herokuapp.com/";
 const openClient = axios.create({
     baseURL: baseURL,
     timeout: 10000

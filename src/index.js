@@ -10,6 +10,7 @@ import '../node_modules/bootstrap/dist/css/bootstrap.min.css'
 import { LogOutDialogProvider } from './contexts/LogoutDialogContext';
 import { MyPhotosProvider } from './contexts/MyPhotos';
 import { AppDataProvider } from './contexts/AppDataContext';
+import { PublicPhotoProvider } from './contexts/PublicPhotoContext';
 ReactDOM.render(
   <React.StrictMode>
     <ErrorBoundary>
@@ -17,13 +18,15 @@ ReactDOM.render(
         <LogOutDialogProvider>
           <MyPhotosProvider>
             <AppDataProvider>
-              <App/>
+              <PublicPhotoProvider>
+                <App />
+              </PublicPhotoProvider>
             </AppDataProvider>
           </MyPhotosProvider>
         </LogOutDialogProvider>
       </AuthProvider>
     </ErrorBoundary>
-  </React.StrictMode>,
+  </React.StrictMode >,
   document.getElementById('root')
 );
 

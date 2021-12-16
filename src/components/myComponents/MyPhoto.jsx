@@ -1,27 +1,31 @@
 import React, { useContext, useState } from 'react'
-import styled from 'styled-components'
+import styled, { css } from 'styled-components'
 import { client } from '../../apiClients/apiClient'
 import { MdDelete } from 'react-icons/md'
 import { useEffect } from 'react'
 import { AppDataContext } from '../../contexts/AppDataContext'
+import { BiShow } from 'react-icons/bi'
+import { PublicPhotoContext } from '../../contexts/PublicPhotoContext'
+
 const Wrapper = styled.div`
 display: flex;
 align-items: center;
 flex-direction: column;
-    
+width: 100%;
 `
 const Card = styled.div`
-    box-shadow: 0px 2px 4px #d6c2c2;
     border-radius: 5px;
     padding: 5px;
     margin-top: 10px;
     margin-bottom: 5px;
-width: 576px;
-min-height: 160px;
-@media (max-width: 767px) {
-    width:90%
-    }
+    width: 576px;
+    min-height: 160px;
+    cursor: pointer;
     position: relative;
+    @media (max-width: 767px) {
+        width:90%
+        }
+    ${({published})=>{return published? true && css`box-shadow: 0px 4px 7px #3976fa;`: true && css`box-shadow: 0px 2px 4px #d6c2c2;`}}
 `
 const DeletePanel = styled.div`
     position: absolute;
@@ -74,12 +78,20 @@ const ToolBar = styled.div`
     display: flex;
     align-items: center;
     height: 30px;
-    .delete-icon{
+    .icon{
         font-size: 24px;
         color: gray;
         cursor: pointer;
+        margin-left: 10px;
+    }
+    .delete{
         :hover{
             color: orangered;
+        }
+    }
+    .publish{
+        :hover{
+            color: #5c5cff;
         }
     }
     @media (max-width: 767px) {
@@ -92,22 +104,33 @@ export default function MyPhoto({ val, lastImgUrl, setPhotosLoaded, index }) {
     const [deletePanel, setDeletePanel] = useState(false)
     const [deletePhotoState, setDeletePhotoState] = useState(false)
     const { photoUrl, _id } = val
-    const {deletedList,setDeletedList} = useContext(AppDataContext)
+    const { deletedList, setDeletedList } = useContext(AppDataContext)
+    const { publicPhoto, setPublicPhoto } = useContext(PublicPhotoContext) 
+    const [toolbarState, setToolbarState] = useState(false)
     const deletePhoto = () => {
         client.post("deletephoto", { _id }).then(
             res => { },
             err => { console.log("err"); }
         )
     }
+    const publishPhoto = () => {
+        client.post("publish", { _id }).then(
+            (res) => {
+                setPublicPhoto(res.data.published)
+            },
+            (err) => { }
+        )
+    }
     useEffect(() => {
         if (deletedList.includes(index)) {
             setDeletePhotoState(true)
+            setToolbarState(false)
         }
     }, [deletedList])
     return (
         <>
-            <Wrapper>
-                <Card>
+            <Wrapper onMouseLeave={() => { setToolbarState(false) }}>
+                <Card published={(publicPhoto === _id)}>
                     <Image src={photoUrl} onLoad={() => {
                         if (lastImgUrl === photoUrl) {
                             setPhotosLoaded(true)
@@ -116,7 +139,8 @@ export default function MyPhoto({ val, lastImgUrl, setPhotosLoaded, index }) {
                         e.target.onerror = null;
                         e.target.src = photoUrl
                     }}
-                        onClick={deletePhoto} />
+                        onClick={() => { setToolbarState(!toolbarState) }}
+                    />
                     {deletePhotoState ? <DeletePanel><div style={{ width: "120px", border: "2px solid grey", borderRadius: "5px", textAlign: "center" }}>Deleted</div></DeletePanel> : null}
                     {deletePanel ? <DeletePanel>
                         <div className='button delete' onClick={() => {
@@ -127,10 +151,12 @@ export default function MyPhoto({ val, lastImgUrl, setPhotosLoaded, index }) {
                         <div className='button cancel' onClick={() => { setDeletePanel(false) }}>CANCEL</div>
                     </DeletePanel> : null}
                 </Card>
-                {deletePhotoState ? <ToolBar></ToolBar> :
+                {(toolbarState && !deletePanel) ?
                     <ToolBar>
-                        <MdDelete className='delete-icon' onClick={() => { setDeletePanel(true) }} />
+                        <MdDelete className='icon delete' onClick={() => { setDeletePanel(true) }} />
+                        <BiShow className='icon publish' onClick={publishPhoto} />
                     </ToolBar>
+                    : <ToolBar></ToolBar>
                 }
             </Wrapper>
 

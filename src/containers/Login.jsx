@@ -22,7 +22,8 @@ export default function Login() {
                 localStorage.setItem("email", res.data.email);
                 if (res.data.accessToken) {
                     setAuth(true)
-                    navigate("/myphotos")
+                    navigate(-2,{replace:true})
+                    
                 }
             },
             err => { console.log(err) }

@@ -52,9 +52,11 @@ const EndBox = styled.div`
     flex: 1;
     display: flex;
     justify-content: end;
+    align-items: center;
+        color: gray;
     .offline-icon{
-        transform: scale(1.5);
-        color: lightcoral;
+        transform: scale(1.3);
+        margin: 5px;
     }
 `
 const LogoutButton = styled.div`
@@ -117,7 +119,7 @@ export default function NavigationBar() {
                 })}
             </MenuBox>
             <EndBox>
-            <Offline><HiStatusOffline className='offline-icon'/></Offline>
+            <Offline><HiStatusOffline className='offline-icon'/>Offline</Offline>
             <Online>
                 <LogoutButton auth={auth} onClick={() => { loging() }}>
                     {auth? <div className='block'><MdAccountCircle className="icon"/>LOGOUT</div>:<div className='block'><MdNoAccounts className="icon"/>LOGIN</div>}   
