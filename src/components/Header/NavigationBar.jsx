@@ -7,7 +7,7 @@ import { AiFillHome } from 'react-icons/ai';
 import { MdNoAccounts, MdAccountCircle } from 'react-icons/md'
 import { LogoutDialogContext } from '../../contexts/LogoutDialogContext'
 import { Offline, Online } from "react-detect-offline";
-import {HiStatusOffline} from 'react-icons/hi'
+import { HiStatusOffline } from 'react-icons/hi'
 
 const Wrapper = styled.div`
     background-color: #ffd6c7;
@@ -107,6 +107,18 @@ export default function NavigationBar() {
         }
     }
     return (
+        /* <>
+
+            {location.pathname === "/" ? 
+            <>
+            <div style={{ marginBottom: "-45px" }}></div>
+            <div className='fixed-top' style={{ backgroundColor: "orange", cursor: "pointer", width: "20px", height: "20px", textAlign: "center", borderRadius: "10px", lineHeight: "20px", margin: "10px" }} onClick={() => {
+                navigate("/myphotos")
+            }}>X</div>
+            </> : //put here
+               
+            }
+        </> */
         <Wrapper className="fixed-top">
             <Link style={{ textDecoration: "none" }} to="/">
                 <LogoBox highlight={location.pathname === "/"}>
@@ -119,13 +131,14 @@ export default function NavigationBar() {
                 })}
             </MenuBox>
             <EndBox>
-            <Offline><HiStatusOffline className='offline-icon'/>Offline</Offline>
-            <Online>
-                <LogoutButton auth={auth} onClick={() => { loging() }}>
-                    {auth? <div className='block'><MdAccountCircle className="icon"/>LOGOUT</div>:<div className='block'><MdNoAccounts className="icon"/>LOGIN</div>}   
-                </LogoutButton>
-            </Online>
+                <Offline><HiStatusOffline className='offline-icon' />Offline</Offline>
+                <Online>
+                    <LogoutButton auth={auth} onClick={() => { loging() }}>
+                        {auth ? <div className='block'><MdAccountCircle className="icon" />LOGOUT</div> : <div className='block'><MdNoAccounts className="icon" />LOGIN</div>}
+                    </LogoutButton>
+                </Online>
             </EndBox>
         </Wrapper>
+
     )
 }

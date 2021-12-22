@@ -52,7 +52,7 @@ export default function MyPhotos() {
     const { myPhotos, setMyPhotos } = useContext(MyPhotosContext)
     const [isPhotosLoaded, setPhotosLoaded] = useState(true)
     const { setDeletedList } = useContext(AppDataContext)
-    const { setPublicPhoto } = useContext(PublicPhotoContext) 
+    const { setPublicPhoto } = useContext(PublicPhotoContext)
     const uploadImage = () => {
         if (!isUploading) {
             setUploading(true)
@@ -95,10 +95,10 @@ export default function MyPhotos() {
 
     const getUser = () => {
         client.post("getuser").then(
-            res =>  {
+            res => {
                 setPublicPhoto(res.data.publicPhoto)
-            } ,
-            err =>  console.log(err)
+            },
+            err => console.log(err)
         )
     }
 

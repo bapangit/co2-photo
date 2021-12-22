@@ -1,7 +1,7 @@
 import React, { Suspense, useContext } from 'react'
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'
 import { AuthContext } from './contexts/AuthContext';
-import ProtectedRoute from './routes/ProtectedRoute'
+import ProtectedRoute from './ProtectedRoute'
 /* 
 Components
  */

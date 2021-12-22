@@ -14,6 +14,8 @@ align-items: center;
 export default function Login() {
     const navigate = useNavigate()
     const { setAuth } = useContext(AuthContext)
+
+   
     const responseSuccessGoogle = (response) => {
         openClient.post("googlelogin",{ tokenId: response.tokenId }).then(
             res => {
@@ -34,7 +36,9 @@ export default function Login() {
     }
 
     useEffect(() => {
-
+        if(localStorage.getItem("token")){
+            navigate('/myphotos')
+        }
     }, [])
 
     return (

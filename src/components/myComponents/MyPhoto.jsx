@@ -121,6 +121,14 @@ export default function MyPhoto({ val, lastImgUrl, setPhotosLoaded, index }) {
             (err) => { }
         )
     }
+    const unPublishPhoto = () => {
+        client.post("unpublish").then(
+            (res) => {
+                setPublicPhoto("null")
+            },
+            (err) => { }
+        )
+    }
     useEffect(() => {
         if (deletedList.includes(index)) {
             setDeletePhotoState(true)
@@ -154,7 +162,7 @@ export default function MyPhoto({ val, lastImgUrl, setPhotosLoaded, index }) {
                 {(toolbarState && !deletePanel) ?
                     <ToolBar>
                         <MdDelete className='icon delete' onClick={() => { setDeletePanel(true) }} />
-                        <BiShow className='icon publish' onClick={publishPhoto} />
+                        <BiShow className='icon publish' style={publicPhoto === _id? {color:"#5c5cff"} : {color:"gray"}} onClick={publicPhoto === _id? unPublishPhoto : publishPhoto} />
                     </ToolBar>
                     : <ToolBar></ToolBar>
                 }
